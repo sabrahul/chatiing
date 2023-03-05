@@ -20,7 +20,7 @@ urlpatterns = [
     # path('api/user/',include(router.urls))
 ]
 
-#/get-conversation
+#http://127.0.0.1:8000/get-conversation/
 #request parameters: -  sender=1, reciever=2  
 # {
 #     "message": [
@@ -36,7 +36,6 @@ urlpatterns = [
 #         {"id": 1,"name": "rahul"},
 #         {"id": 2, "name": "vishal"}
 #     ],
-#     "current_user": {"id": 1,"name": "rahul"}
 # }
 
 #/save-message
