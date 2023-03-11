@@ -77,6 +77,7 @@ class ConversationView(APIView):
         sender_id=int(request.GET.get('sender'))
         receiver_id=int(request.GET.get('receiver'))
         chatters = [sender_id,receiver_id]
+        receiver_name = User.objects.get(id=receiver_id).name
         context = Message.objects.filter(sender__in=chatters,receiver__in=chatters).order_by('created_at')
         chat_object = [{
                 "message": chat.message,
@@ -85,7 +86,8 @@ class ConversationView(APIView):
                 "date": chat.created_at
             } for chat in context]
         return Response({
-            "message": chat_object        
+            "message": chat_object,
+            "receiver_name": receiver_name        
         })
     
 
