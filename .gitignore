@@ -1,0 +1,33 @@
+# Ignore project-specific files and directories
+*.pyc
+__pycache__/
+__migrations__/
+*.sqlite3
+
+# Ignore development and runtime files
+*.venv
+*.log
+*.bak
+
+# Ignore static and media files
+staticfiles/
+media/
+
+# Ignore sensitive or generated files
+secret_key.txt
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+
+# Ignore system-specific files
+*.DS_Store
+Thumbs.db
+
+# Ignore deployment-specific files
+*.venv
+*.venv.local
+*.venv.*.local
+*.static
+*.config
+*.pyc

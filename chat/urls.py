@@ -1,21 +1,21 @@
 from django.urls import path
-# from rest_framework.routers import DefaultRouter
-
 from .views import MessageListView, MessageCreateView, UserLoginView,UserRegisterView,ConversationView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
-# router=DefaultRouter()
-
-
-# router.register('register/',UserRegisterView,basename='register')
 
 
 
 urlpatterns = [
-    path('api/user/register/',UserRegisterView.as_view(),name='register'),
-    path('api/user/login/',UserLoginView.as_view(),name='login'),
-    path('get-all-users/',MessageListView.as_view(),name='get_all_users'),
-    path('get-conversation/',ConversationView.as_view(),name="get_conversation"),
-    path('save-message/',MessageCreateView.as_view(),name='create-message'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/user/register',UserRegisterView.as_view(),name='register'),
+    path('api/user/login',UserLoginView.as_view(),name='login'),
+    path('get-all-users',MessageListView.as_view(),name='get_all_users'),
+    path('get-conversation',ConversationView.as_view(),name="get_conversation"),
+    path('save-message',MessageCreateView.as_view(),name='create-message'),
 
     # path('api/user/',include(router.urls))
 ]

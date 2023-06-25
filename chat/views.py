@@ -9,6 +9,7 @@ from .models import User,Message
 from .serializers import UserLoginSerializer, UserRegisterSerializer,MessageSerializer, UserSerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from .utils import get_user_by_id, get_conversation
 import json
 
 # Create your views here.
@@ -39,11 +40,11 @@ class UserLoginView(APIView):
         password=serializer.data.get('password')
         user=authenticate(email=email,password=password)
         if user is not None:
-            # token=get_tokens_for_user(user)
-            data = json.dumps({'msg':'User login Successfully'})
-            return Response(data,status=status.HTTP_200_OK),200
+            token=get_tokens_for_user(user)
+            data = {"status": True,"token": token, "name":user.name, "email": user.email, "id": user.id}
+            return Response(data,status=status.HTTP_200_OK)
         else:
-            return Response({"error":"User does not exist"},status=status.HTTP_400_BAD_REQUEST),400
+            return Response({"error":"User does not exist"},status=status.HTTP_404_NOT_FOUND)
 
 
 class MessageListView(ListAPIView):
@@ -76,18 +77,11 @@ class ConversationView(APIView):
     def get(self,request):
         sender_id=int(request.GET.get('sender'))
         receiver_id=int(request.GET.get('receiver'))
-        chatters = [sender_id,receiver_id]
-        receiver_name = User.objects.get(id=receiver_id).name
-        context = Message.objects.filter(sender__in=chatters,receiver__in=chatters).order_by('created_at')
-        chat_object = [{
-                "message": chat.message,
-                "sender": chat.sender.id,
-                "receiver": chat.receiver.id,
-                "date": chat.created_at
-            } for chat in context]
+        users = [sender_id,receiver_id]
+        chat_object = get_conversation(users)
         return Response({
             "message": chat_object,
-            "receiver_name": receiver_name        
+            "receiver_name": get_user_by_id(receiver_id).get('name')        
         })
     
 
