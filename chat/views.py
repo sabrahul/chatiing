@@ -63,10 +63,14 @@ class MessageCreateView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({
-            'msg':'message saved Successfully',
-            "new_message": request.data.get('message'),
-            "sender": request.data.get('sender'),
-            "receiver": request.data.get('receiver')
+            "chat": {
+                "date": str(serializer.instance.created_at),
+                "message": request.data.get('message'),
+                "sender": request.data.get('sender'),
+                "receiver": request.data.get('receiver')
+            },
+        "status": True,
+        "message": "message created successfully"
         },status=status.HTTP_201_CREATED)
     
 class ConversationView(APIView):
@@ -81,7 +85,7 @@ class ConversationView(APIView):
         chat_object = get_conversation(users)
         return Response({
             "message": chat_object,
-            "receiver_name": get_user_by_id(receiver_id).get('name')        
+            "receiver_name": get_user_by_id(receiver_id).name        
         })
     
 
